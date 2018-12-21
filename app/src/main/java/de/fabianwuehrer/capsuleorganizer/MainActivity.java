@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MainActivity extends AppCompatActivity {
 
     public static final int ADD_CAPSULE_REQUEST = 1;
+    public static final int EDIT_CAPSULE_REQUEST = 2;
+
 
     private CapsuleViewModel capsuleViewModel;
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         btnAddCapsule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent (MainActivity.this, AddCapsuleActivity.class);
+                Intent intent = new Intent (MainActivity.this, AddEditCapsuleActivity.class);
                 startActivityForResult(intent, ADD_CAPSULE_REQUEST);
             }
         });
@@ -68,6 +70,18 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Capsule deleted", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);
+
+        adapter.setOnItemClickListener(new CapsuleAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Capsule capsule) {
+                Intent intent = new Intent(MainActivity.this, AddEditCapsuleActivity.class);
+                intent.putExtra(AddEditCapsuleActivity.EXTRA_ID, capsule.getId());
+                intent.putExtra(AddEditCapsuleActivity.EXTRA_NAME, capsule.getName());
+                intent.putExtra(AddEditCapsuleActivity.EXTRA_DESCRIPTION, capsule.getDescription());
+                intent.putExtra(AddEditCapsuleActivity.EXTRA_COUNT, capsule.getCount());
+                startActivityForResult(intent, EDIT_CAPSULE_REQUEST);
+            }
+        });
     }
 
     @Override
@@ -75,14 +89,32 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ADD_CAPSULE_REQUEST && resultCode == RESULT_OK){
-            String name = data.getStringExtra(AddCapsuleActivity.EXTRA_NAME);
-            String description = data.getStringExtra(AddCapsuleActivity.EXTRA_DESCRIPTION);
-            int count = data.getIntExtra(AddCapsuleActivity.EXTRA_COUNT, 1);
+            String name = data.getStringExtra(AddEditCapsuleActivity.EXTRA_NAME);
+            String description = data.getStringExtra(AddEditCapsuleActivity.EXTRA_DESCRIPTION);
+            int count = data.getIntExtra(AddEditCapsuleActivity.EXTRA_COUNT, 1);
 
             Capsule capsule = new Capsule(name, description, count);
             capsuleViewModel.insert(capsule);
 
             Toast.makeText(this, "Capsule saved", Toast.LENGTH_SHORT).show();
+        }
+        else if (requestCode == EDIT_CAPSULE_REQUEST && resultCode == RESULT_OK){
+            int id =data.getIntExtra(AddEditCapsuleActivity.EXTRA_ID, -1);
+
+            if (id==-1){
+                Toast.makeText(this, "Capsule coudn't be saved", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String name = data.getStringExtra(AddEditCapsuleActivity.EXTRA_NAME);
+            String description = data.getStringExtra(AddEditCapsuleActivity.EXTRA_DESCRIPTION);
+            int count = data.getIntExtra(AddEditCapsuleActivity.EXTRA_COUNT, 1);
+
+            Capsule capsule = new Capsule(name, description, count);
+            capsule.setId(id);
+            capsuleViewModel.update(capsule);
+
+            Toast.makeText(this, "Capsule updated", Toast.LENGTH_SHORT).show();
         }
         else{
             Toast.makeText(this, "Capsule not saved", Toast.LENGTH_SHORT).show();

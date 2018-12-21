@@ -3,6 +3,7 @@ package de.fabianwuehrer.capsuleorganizer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -14,6 +15,7 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
     public CapsuleAdapter() {
         super(DIFF_CALLBACK);
     }
+    private OnItemClickListener listener;
 
     private static final DiffUtil.ItemCallback<Capsule> DIFF_CALLBACK = new DiffUtil.ItemCallback<Capsule>() {
         @Override
@@ -61,6 +63,23 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
             textViewName = itemView.findViewById(R.id.text_view_name);
             textViewDescription = itemView.findViewById(R.id.text_view_description);
             textViewCount = itemView.findViewById(R.id.text_view_count);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if (listener != null && position != RecyclerView.NO_POSITION)
+                    listener.onItemClick(getItem(position));
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(Capsule capsule);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 }

@@ -11,7 +11,10 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
-public class AddCapsuleActivity extends AppCompatActivity {
+public class AddEditCapsuleActivity extends AppCompatActivity {
+
+    public static final String EXTRA_ID =
+            "de.fabianwuehrer.capsuleorganizer.EXTRA_ID";
 
     public static final String EXTRA_NAME =
             "de.fabianwuehrer.capsuleorganizer.EXTRA_NAME";
@@ -39,7 +42,17 @@ public class AddCapsuleActivity extends AppCompatActivity {
         numberPickerCount.setMaxValue(99);
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close);
-        setTitle("Add Capsule");
+
+        Intent intent = getIntent();
+        if(intent.hasExtra(EXTRA_ID)) {
+            setTitle("Edit Capsule");
+            editTextName.setText(intent.getStringExtra(EXTRA_NAME));
+            editTextDescription.setText(intent.getStringExtra(EXTRA_DESCRIPTION));
+            numberPickerCount.setValue(intent.getIntExtra(EXTRA_COUNT, 1));
+        }
+        else {
+            setTitle("Add Capsule");
+        }
     }
 
     @Override
@@ -74,6 +87,11 @@ public class AddCapsuleActivity extends AppCompatActivity {
         data.putExtra(EXTRA_NAME, name);
         data.putExtra(EXTRA_DESCRIPTION, description);
         data.putExtra(EXTRA_COUNT, count);
+
+        int id = getIntent().getIntExtra(EXTRA_ID, -1);
+        if(id != -1){
+            data.putExtra(EXTRA_ID, id);
+        }
 
         setResult(RESULT_OK, data);
         finish();
