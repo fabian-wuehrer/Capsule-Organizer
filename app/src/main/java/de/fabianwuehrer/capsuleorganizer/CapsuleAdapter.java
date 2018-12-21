@@ -45,6 +45,10 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
         holder.textViewCount.setText(String.valueOf(currentCapsule.getCount()));
     }
 
+    public Capsule getCapsulesAt(int position){
+        return  getItem(position);
+    }
+
     class CapsuleHolder extends RecyclerView.ViewHolder {
 
         private TextView textViewName;
