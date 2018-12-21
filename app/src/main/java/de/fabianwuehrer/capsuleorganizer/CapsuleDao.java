@@ -2,6 +2,7 @@ package de.fabianwuehrer.capsuleorganizer;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -21,5 +22,5 @@ public interface CapsuleDao {
     void delete(Capsule capsule);
 
     @Query("SELECT * FROM capsule_table ORDER BY name DESC")
-    List<Capsule> getAllCapsules();
+    LiveData<List<Capsule>> getAllCapsules();
 }
