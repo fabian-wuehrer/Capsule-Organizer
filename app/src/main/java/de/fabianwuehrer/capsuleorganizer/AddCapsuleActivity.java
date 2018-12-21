@@ -65,8 +65,8 @@ public class AddCapsuleActivity extends AppCompatActivity {
         String description = editTextDescription.getText().toString();
         int count = numberPickerCount.getValue();
 
-        if (name.trim().isEmpty() || description.trim().isEmpty()){
-            Toast.makeText(this, "Please insert a name and description", Toast.LENGTH_SHORT).show();
+        if (name.trim().isEmpty()){
+            Toast.makeText(this, "Please insert a name", Toast.LENGTH_SHORT).show();
             return;
         }
 
