@@ -21,6 +21,6 @@ public interface CapsuleDao {
     @Delete
     void delete(Capsule capsule);
 
-    @Query("SELECT * FROM capsule_table ORDER BY name DESC")
+    @Query("SELECT * FROM capsule_table ORDER BY name ASC")
     LiveData<List<Capsule>> getAllCapsules();
 }
