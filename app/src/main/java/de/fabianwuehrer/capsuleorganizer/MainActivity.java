@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
             int id =data.getIntExtra(AddEditCapsuleActivity.EXTRA_ID, -1);
 
             if (id==-1){
-                Toast.makeText(this, "Capsule coudn't be saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Capsule couldn't be saved", Toast.LENGTH_SHORT).show();
                 return;
             }
 
