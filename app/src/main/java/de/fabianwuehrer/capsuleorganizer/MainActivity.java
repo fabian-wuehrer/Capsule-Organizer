@@ -13,7 +13,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ADD_CAPSULE_REQUEST && resultCode == RESULT_OK){
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Capsule updated", Toast.LENGTH_SHORT).show();
         }
         else{
-            Toast.makeText(this, "Capsule not saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "canceled", Toast.LENGTH_SHORT).show();
         }
     }
 
