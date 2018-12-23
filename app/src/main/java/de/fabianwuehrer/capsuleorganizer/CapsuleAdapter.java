@@ -18,15 +18,15 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
 
     private static final DiffUtil.ItemCallback<Capsule> DIFF_CALLBACK = new DiffUtil.ItemCallback<Capsule>() {
         @Override
-        public boolean areItemsTheSame(@NonNull Capsule oldItem, @NonNull Capsule newItem) {
+        public boolean areItemsTheSame(Capsule oldItem, Capsule newItem) {
             return oldItem.getId() == newItem.getId();
         }
 
         @Override
-        public boolean areContentsTheSame(@NonNull Capsule oldItem, @NonNull Capsule newItem) {
+        public boolean areContentsTheSame(Capsule oldItem, Capsule newItem) {
             return oldItem.getName().equals(newItem.getName()) &&
                     oldItem.getDescription().equals(newItem.getDescription()) &&
-                    oldItem.getCount() == newItem.getCount();
+                    oldItem.getCnt() == newItem.getCnt();
         }
     };
 
@@ -43,7 +43,7 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
         Capsule currentCapsule = getItem(position);
         holder.textViewName.setText(currentCapsule.getName());
         holder.textViewDescription.setText(currentCapsule.getDescription());
-        holder.textViewCount.setText(String.valueOf(currentCapsule.getCount()));
+        holder.textViewCount.setText(String.valueOf(currentCapsule.getCnt()));
     }
 
     public Capsule getCapsulesAt(int position){
@@ -57,7 +57,7 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
         private TextView textViewCount;
 
 
-        public CapsuleHolder(@NonNull View itemView) {
+        public CapsuleHolder(View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.text_view_name);
             textViewDescription = itemView.findViewById(R.id.text_view_description);

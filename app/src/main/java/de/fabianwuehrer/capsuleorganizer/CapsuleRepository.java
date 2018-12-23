@@ -34,6 +34,11 @@ public class CapsuleRepository {
         return  allCapsules;
     }
 
+    public LiveData<Integer> sum_cnt(){
+        return capsuleDao.sum_cnt();
+    }
+
+
     private static class InsertCapsuleAsyncTask extends AsyncTask<Capsule, Void, Void>{
 
         private CapsuleDao capsuleDao;

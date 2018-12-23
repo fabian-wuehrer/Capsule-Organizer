@@ -23,4 +23,8 @@ public interface CapsuleDao {
 
     @Query("SELECT * FROM capsule_table ORDER BY name ASC")
     LiveData<List<Capsule>> getAllCapsules();
+
+    @Query("SELECT SUM(cnt) FROM capsule_table")
+    LiveData<Integer> sum_cnt();
+
 }

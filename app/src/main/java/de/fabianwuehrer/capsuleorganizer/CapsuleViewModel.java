@@ -34,4 +34,9 @@ public class CapsuleViewModel extends AndroidViewModel {
     public LiveData<List<Capsule>> getAllCapsules() {
         return allCapsules;
     }
+
+    public LiveData<Integer> sum_cnt(){
+        return repository.sum_cnt();
+    }
+
 }

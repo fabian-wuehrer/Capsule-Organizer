@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.List;
-
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -52,19 +50,27 @@ public class MainActivity extends AppCompatActivity {
         capsuleViewModel = ViewModelProviders.of(this).get(CapsuleViewModel.class);
         capsuleViewModel.getAllCapsules().observe(this, new Observer<List<Capsule>>() {
             @Override
-            public void onChanged(List<Capsule> capsules) {
+            public void onChanged(@Nullable List<Capsule> capsules) {
                 adapter.submitList(capsules);
+            }
+        });
+
+        final TextView textViewSumCount = findViewById(R.id.text_view_sum_count);
+        capsuleViewModel.sum_cnt().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer sum) {
+                textViewSumCount.setText(String.valueOf(sum));
             }
         });
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT){
             @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 capsuleViewModel.delete(adapter.getCapsulesAt(viewHolder.getAdapterPosition()));
                 Toast.makeText(MainActivity.this, "Capsule deleted", Toast.LENGTH_SHORT).show();
             }
@@ -77,10 +83,11 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(AddEditCapsuleActivity.EXTRA_ID, capsule.getId());
                 intent.putExtra(AddEditCapsuleActivity.EXTRA_NAME, capsule.getName());
                 intent.putExtra(AddEditCapsuleActivity.EXTRA_DESCRIPTION, capsule.getDescription());
-                intent.putExtra(AddEditCapsuleActivity.EXTRA_COUNT, capsule.getCount());
+                intent.putExtra(AddEditCapsuleActivity.EXTRA_COUNT, capsule.getCnt());
                 startActivityForResult(intent, EDIT_CAPSULE_REQUEST);
             }
         });
+
     }
 
     @Override

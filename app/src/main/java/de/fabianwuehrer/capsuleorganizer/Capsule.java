@@ -10,12 +10,12 @@ public class Capsule {
 
     private String name;
     private String description;
-    private int count;
+    private int cnt;
 
-    public Capsule(String name, String description, int count) {
+    public Capsule(String name, String description, int cnt) {
         this.name = name;
         this.description = description;
-        this.count = count;
+        this.cnt = cnt;
     }
 
     public void setId(int id) {
@@ -34,7 +34,7 @@ public class Capsule {
         return description;
     }
 
-    public int getCount() {
-        return count;
+    public int getCnt() {
+        return cnt;
     }
 }
