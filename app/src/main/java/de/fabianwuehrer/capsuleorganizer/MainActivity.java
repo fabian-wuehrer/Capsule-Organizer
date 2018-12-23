@@ -59,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         capsuleViewModel.sum_cnt().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer sum) {
+                if(sum==null){
+                    sum = 0;
+                }
                 textViewSumCount.setText(String.valueOf(sum));
             }
         });
