@@ -26,7 +26,8 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
         public boolean areContentsTheSame(Capsule oldItem, Capsule newItem) {
             return oldItem.getName().equals(newItem.getName()) &&
                     oldItem.getDescription().equals(newItem.getDescription()) &&
-                    oldItem.getCnt() == newItem.getCnt();
+                    oldItem.getCnt() == newItem.getCnt() &&
+                    oldItem.getExp_date().equals(newItem.getExp_date());
         }
     };
 
@@ -44,10 +45,31 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
         holder.textViewName.setText(currentCapsule.getName());
         holder.textViewDescription.setText(currentCapsule.getDescription());
         holder.textViewCount.setText(String.valueOf(currentCapsule.getCnt()));
+        holder.textViewExpDate.setText(String.valueOf(getMonthString(currentCapsule.getExp_date().getMonth())) +
+                " " + String.valueOf(currentCapsule.getExp_date().getYear()));
     }
 
     public Capsule getCapsulesAt(int position){
         return  getItem(position);
+    }
+
+    public String getMonthString(int month){
+        switch(month){
+            case 0: return "December";
+            case 1: return "January";
+            case 2: return "February";
+            case 3: return "March";
+            case 4: return "April";
+            case 5: return "May";
+            case 6: return "June";
+            case 7: return "July";
+            case 8: return "August";
+            case 9: return "September";
+            case 10: return "October";
+            case 11: return "November";
+            case 12: return "December";
+            default: return "" + month;
+        }
     }
 
     class CapsuleHolder extends RecyclerView.ViewHolder {
@@ -55,6 +77,7 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
         private TextView textViewName;
         private TextView textViewDescription;
         private TextView textViewCount;
+        private TextView textViewExpDate;
 
 
         public CapsuleHolder(View itemView) {
@@ -62,6 +85,7 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
             textViewName = itemView.findViewById(R.id.text_view_name);
             textViewDescription = itemView.findViewById(R.id.text_view_description);
             textViewCount = itemView.findViewById(R.id.text_view_count);
+            textViewExpDate = itemView.findViewById(R.id.text_view_exp_date);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

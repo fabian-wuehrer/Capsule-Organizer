@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.Date;
 import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -87,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(AddEditCapsuleActivity.EXTRA_NAME, capsule.getName());
                 intent.putExtra(AddEditCapsuleActivity.EXTRA_DESCRIPTION, capsule.getDescription());
                 intent.putExtra(AddEditCapsuleActivity.EXTRA_COUNT, capsule.getCnt());
+                intent.putExtra(AddEditCapsuleActivity.EXTRA_EXP_COUNT_MONTH, capsule.getExp_date().getMonth());
+                intent.putExtra(AddEditCapsuleActivity.EXTRA_EXP_COUNT_YEAR, capsule.getExp_date().getYear());
                 startActivityForResult(intent, EDIT_CAPSULE_REQUEST);
             }
         });
@@ -101,8 +105,10 @@ public class MainActivity extends AppCompatActivity {
             String name = data.getStringExtra(AddEditCapsuleActivity.EXTRA_NAME);
             String description = data.getStringExtra(AddEditCapsuleActivity.EXTRA_DESCRIPTION);
             int count = data.getIntExtra(AddEditCapsuleActivity.EXTRA_COUNT, 1);
+            int month = data.getIntExtra(AddEditCapsuleActivity.EXTRA_EXP_COUNT_MONTH, 01);
+            int year = data.getIntExtra(AddEditCapsuleActivity.EXTRA_EXP_COUNT_YEAR, 01);
 
-            Capsule capsule = new Capsule(name, description, count);
+            Capsule capsule = new Capsule(name, description, count, new Date(year, month, 01));
             capsuleViewModel.insert(capsule);
 
             Toast.makeText(this, "Capsule saved", Toast.LENGTH_SHORT).show();
@@ -118,8 +124,11 @@ public class MainActivity extends AppCompatActivity {
             String name = data.getStringExtra(AddEditCapsuleActivity.EXTRA_NAME);
             String description = data.getStringExtra(AddEditCapsuleActivity.EXTRA_DESCRIPTION);
             int count = data.getIntExtra(AddEditCapsuleActivity.EXTRA_COUNT, 1);
+            int month = data.getIntExtra(AddEditCapsuleActivity.EXTRA_EXP_COUNT_MONTH, 01);
+            int year = data.getIntExtra(AddEditCapsuleActivity.EXTRA_EXP_COUNT_YEAR, 01);
 
-            Capsule capsule = new Capsule(name, description, count);
+
+            Capsule capsule = new Capsule(name, description, count, new Date(year, month, 01));
             capsule.setId(id);
             capsuleViewModel.update(capsule);
 

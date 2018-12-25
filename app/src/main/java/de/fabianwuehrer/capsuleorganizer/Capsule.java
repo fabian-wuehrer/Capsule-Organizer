@@ -1,5 +1,7 @@
 package de.fabianwuehrer.capsuleorganizer;
 
+import java.util.Date;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,11 +13,13 @@ public class Capsule {
     private String name;
     private String description;
     private int cnt;
+    private Date exp_date;
 
-    public Capsule(String name, String description, int cnt) {
+    public Capsule(String name, String description, int cnt, Date exp_date) {
         this.name = name;
         this.description = description;
         this.cnt = cnt;
+        this.exp_date = exp_date;
     }
 
     public void setId(int id) {
@@ -36,5 +40,9 @@ public class Capsule {
 
     public int getCnt() {
         return cnt;
+    }
+
+    public Date getExp_date() {
+        return exp_date;
     }
 }

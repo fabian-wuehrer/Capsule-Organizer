@@ -11,7 +11,6 @@ import androidx.room.Update;
 
 @Dao
 public interface CapsuleDao {
-
     @Insert
     void insert(Capsule capsule);
 
