@@ -1,17 +1,19 @@
 package de.fabianwuehrer.capsuleorganizer;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Date;
 import java.util.List;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -25,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
     public static final int ADD_CAPSULE_REQUEST = 1;
     public static final int EDIT_CAPSULE_REQUEST = 2;
 
-
     private CapsuleViewModel capsuleViewModel;
+    private final CapsuleAdapter adapter = new CapsuleAdapter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +47,9 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
+        registerForContextMenu(recyclerView);
 
-        final CapsuleAdapter adapter = new CapsuleAdapter();
+
         recyclerView.setAdapter(adapter);
 
         capsuleViewModel = ViewModelProviders.of(this).get(CapsuleViewModel.class);
@@ -74,11 +77,32 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
 
+            // on swipe count-1
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+                Capsule capsule = adapter.getCapsulesAt(viewHolder.getAdapterPosition());
+                int newCnt = capsule.getCnt() - 1;
+                if (newCnt < 0) {
+                    capsuleViewModel.delete(capsule);
+                    Toast.makeText(MainActivity.this, "Capsule removed", Toast.LENGTH_SHORT).show();
+                } else {
+                    String name = capsule.getName();
+                    Capsule newCapsule = new Capsule(name, capsule.getDescription(), newCnt, capsule.getExp_date());
+                    newCapsule.setId(capsule.getId());
+                    capsuleViewModel.update(newCapsule);
+                    Toast.makeText(MainActivity.this, name + ": " + newCnt + " capsules left", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            /*  on swipe delete
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 capsuleViewModel.delete(adapter.getCapsulesAt(viewHolder.getAdapterPosition()));
                 Toast.makeText(MainActivity.this, "Capsule deleted", Toast.LENGTH_SHORT).show();
             }
+            */
+
         }).attachToRecyclerView(recyclerView);
 
         adapter.setOnItemClickListener(new CapsuleAdapter.OnItemClickListener() {
@@ -94,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, EDIT_CAPSULE_REQUEST);
             }
         });
-
     }
 
     @Override
@@ -136,6 +159,19 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             Toast.makeText(this, "canceled", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case (01):
+                capsuleViewModel.delete(adapter.getCapsulesAt(item.getGroupId()));
+                Toast.makeText(MainActivity.this, "Capsule removed", Toast.LENGTH_SHORT).show();
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
         }
     }
 

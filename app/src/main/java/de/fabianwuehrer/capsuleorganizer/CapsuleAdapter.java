@@ -1,5 +1,8 @@
 package de.fabianwuehrer.capsuleorganizer;
 
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +50,13 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
         holder.textViewCount.setText(String.valueOf(currentCapsule.getCnt()));
         holder.textViewExpDate.setText(String.valueOf(getMonthString(currentCapsule.getExp_date().getMonth())) +
                 " " + String.valueOf(currentCapsule.getExp_date().getYear()));
+        /*
+        if (currentCapsule.getCnt()<=0){
+            holder.textViewName.setTextColor(Color.GRAY);
+            holder.textViewName.setPaintFlags(holder.textViewName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.textViewCount.setTextColor(Color.GRAY);
+        }
+        */
     }
 
     public Capsule getCapsulesAt(int position){
@@ -72,7 +82,7 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
         }
     }
 
-    class CapsuleHolder extends RecyclerView.ViewHolder {
+    class CapsuleHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
 
         private TextView textViewName;
         private TextView textViewDescription;
@@ -86,6 +96,7 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
             textViewDescription = itemView.findViewById(R.id.text_view_description);
             textViewCount = itemView.findViewById(R.id.text_view_count);
             textViewExpDate = itemView.findViewById(R.id.text_view_exp_date);
+            itemView.setOnCreateContextMenuListener(this);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -95,6 +106,11 @@ public class CapsuleAdapter extends ListAdapter<Capsule, CapsuleAdapter.CapsuleH
                     listener.onItemClick(getItem(position));
                 }
             });
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            contextMenu.add(this.getAdapterPosition(), 01, 0, "Remove");
         }
     }
 

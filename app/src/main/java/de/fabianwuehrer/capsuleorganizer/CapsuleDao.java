@@ -20,7 +20,7 @@ public interface CapsuleDao {
     @Delete
     void delete(Capsule capsule);
 
-    @Query("SELECT * FROM capsule_table ORDER BY name ASC")
+    @Query("SELECT * FROM capsule_table ORDER BY CASE WHEN cnt<=0 then 1 else 0 end, name COLLATE NOCASE")
     LiveData<List<Capsule>> getAllCapsules();
 
     @Query("SELECT SUM(cnt) FROM capsule_table")
